@@ -1,0 +1,29 @@
+# fly.toml app configuration file generated for ptv-simple on 2024-04-02T22:36:17+11:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'ptv-simple'
+primary_region = 'syd'
+console_command = '/rails/bin/rails console'
+
+[build]
+
+[deploy]
+
+[http_service]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ['app']
+
+[[vm]]
+  memory = '256mb'
+  cpu_kind = 'shared'
+  cpus = 1
+
+[[statics]]
+  guest_path = '/rails/public'
+  url_prefix = '/'

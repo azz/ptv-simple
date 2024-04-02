@@ -1,5 +1,6 @@
-unless ENV['PTV_DEV_ID']
-  fail "PTV_DEV_ID and PTV_SECRET_KEY must be set in .env"
+if !ENV['PTV_DEV_ID']
+  fail "PTV_DEV_ID and PTV_SECRET_KEY must be set in .env" if Rails.env.development?
+  return
 end
 
 RubyPtv.configure(
