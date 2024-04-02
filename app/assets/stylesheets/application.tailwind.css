@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .card {
+    @apply rounded-lg p-2 my-2;
+  }
+
+  ul {
+    @apply list-inside list-disc pl-2;
+  }
+
+  h1 {
+    @apply text-2xl;
+  }
+}
+
+@layer utilities {
+  .bg-train {
+    border: 1px solid #0072ce;
+  }
+
+  .bg-tram {
+    border: 1px solid #78be20;
+  }
+}
+
+* {
+  font-family: monospace;
+}
+
