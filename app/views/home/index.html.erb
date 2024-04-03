@@ -1,4 +1,4 @@
-<h1>Next departures from 🏡 <u>Home</u> to 🏢 <u>Work</u></h1>
+<h1>Next departures&hellip;</h1>
 
 <% @options.each do |option| %>
   <% route_type = Ptv.route_type_name(option.stop.route_type) %>
@@ -6,6 +6,15 @@
   <section class="bg-<%= route_type_slug %> card flex">
     <%= image_tag(route_type_slug + '.svg', width: 24, class: 'mr-2') %>
     <div>
+      <% option.departures.first.disruptions.each do |disruption| %>
+        <%= next unless disruption.display_status %>
+        <p style="background: <%= disruption.colour %>" class="p-1">
+          [<%= disruption.disruption_type %>]
+          <%= disruption.title %>
+          [<a href="<%= disruption.url %>">Details</a>]
+        </p>
+      <% end %>
+
       <p>
         The next
         <%= option.departures.length %>
@@ -14,18 +23,20 @@
         from
         <u><%= option.stop.stop_name %></u>
         towards
-        <u><%= option.departures.first.direction.direction_name %></u>
+        <u><%= option.direction.direction_name %></u>
         are:
       </p>
       <ul>
         <% option.departures.each do |departure| %>
           <li>
-            in
-            <strong><%= departure.live? ? '' : '~' %><%= time_ago_in_words(departure.departure_at) %></strong>
-            (<%= departure.departure_at.to_fs(:short) %>)
+            <% if departure.live? %>
+            [in
+            <strong><%= time_ago_in_words(departure.estimated_departure_at) %></strong>]
+            <% end %>
+            [scheduled: <%= departure.scheduled_departure_at.to_fs(:short) %>]
             <% if departure.platform_number %>
-              on platform
-              <%= departure.platform_number %>
+              [platform
+              <%= departure.platform_number %>]
             <% end %>
           </li>
         <% end %>

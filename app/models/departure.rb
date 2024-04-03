@@ -2,11 +2,10 @@ class Departure < T::Struct
   const :platform_number, T.nilable(String)
   const :scheduled_departure_utc, String
   const :estimated_departure_utc, T.nilable(String)
-  const :direction, RouteDirection
+  const :disruptions, T::Array[Disruption]
 
-  def departure_at
-    Time.zone.parse(estimated_departure_utc || scheduled_departure_utc)
-  end
+  def estimated_departure_at = Time.zone.parse(estimated_departure_utc)
+  def scheduled_departure_at = Time.zone.parse(scheduled_departure_utc)
 
   def live? = !!estimated_departure_utc
 end
