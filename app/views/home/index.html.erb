@@ -21,7 +21,7 @@
         <% option.departures.each do |departure| %>
           <li>
             in
-            <strong><%= time_ago_in_words(departure.departure_at) %></strong>
+            <strong><%= departure.live? ? '' : '~' %><%= time_ago_in_words(departure.departure_at) %></strong>
             (<%= departure.departure_at.to_fs(:short) %>)
             <% if departure.platform_number %>
               on platform

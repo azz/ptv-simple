@@ -7,4 +7,6 @@ class Departure < T::Struct
   def departure_at
     Time.zone.parse(estimated_departure_utc || scheduled_departure_utc)
   end
+
+  def live? = !!estimated_departure_utc
 end
