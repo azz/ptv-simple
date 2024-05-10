@@ -1,3 +1,13 @@
+<%
+  def short_time(date)
+    minutes = (date - Time.current) / 60
+    return 'GONE' if minutes < 0
+    return 'NOW' if minutes < 1
+    return "#{minutes.floor}m" if minutes < 60
+    return "#{(minutes / 60).floor}h #{(minutes % 60).floor}m"
+  end
+%>
+
 <h1>Next departures&hellip;</h1>
 
 <% @options.each do |option| %>
@@ -15,7 +25,7 @@
         </p>
       <% end %>
 
-      <p>
+      <p class="mx-2">
         The next
         <%= option.departures.length %>
         <strong><%= route_type %></strong>
@@ -26,21 +36,26 @@
         <u><%= option.direction.direction_name %></u>
         are:
       </p>
-      <ul>
+      <div class="flex flex-row w-full">
         <% option.departures.each do |departure| %>
-          <li>
-            <% if departure.live? %>
-            [in
-            <strong><%= time_ago_in_words(departure.estimated_departure_at) %></strong>]
-            <% end %>
-            [scheduled: <%= departure.scheduled_departure_at.to_fs(:short) %>]
+          <div class="basis-1/3 rounded-md border-2 p-2 m-2">
+            <div>
+              <% if departure.live? %>
+                <strong class="text-2xl"><%= short_time(departure.estimated_departure_at) %></strong>
+              <% else %>
+                -
+              <% end %>
+            </div>
+            <div>Scheduled: <%= departure.scheduled_departure_at.to_fs(:time) %></div>
             <% if departure.platform_number %>
-              [platform
-              <%= departure.platform_number %>]
+              <div>
+                Platform:
+                <%= departure.platform_number %>
+              </div>
             <% end %>
-          </li>
+          </div>
         <% end %>
-      </ul>
+      </div>
     </div>
   </section>
 <% end %>
