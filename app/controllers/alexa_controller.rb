@@ -45,13 +45,10 @@ class AlexaController < ApplicationController
   def new
     route_type_name = 'Train'
     stop_name = 'Gardiner'
-    direction_name = 'City (Flinders Street)'
+    direction_name = 'City'
 
     route_type = Ptv.route_type(route_type_name)
-    stop_search = Requests::Search.execute(
-      stop_name,
-      route_types: [route_type]
-    )
+    stop_search = Requests::Search.execute(stop_name, route_types: [route_type])
     result = stop_search.stops.filter_map do |stop|
       directions = stop.routes.flat_map do |route|
         Requests::Directions.from_route(route_id: route.route_id)
@@ -60,7 +57,6 @@ class AlexaController < ApplicationController
       next unless direction
 
       departures = Requests::Departures.departures(stop:, direction:)
-
       OpenStruct.new(stop:, direction:, departures:,)
     end.first
 

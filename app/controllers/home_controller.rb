@@ -2,7 +2,7 @@ class HomeController < ApplicationController
   # GET /
   def index
     unless params[:q]
-      return redirect_to "?q=Train|Gardiner|City (Flinders Street),Tram|Belmont Ave|Moreland"
+      return redirect_to "?q=Train|Gardiner|City,Tram|Belmont Ave|Moreland"
     end
 
     options = params.fetch(:q)
